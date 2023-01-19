@@ -1,5 +1,5 @@
 <template>
-    <form-field :url="url"/>
+  <form-field class="w-[70vw]" :url="url" />
 </template>
 <script>
 //@ is an alias to /src

@@ -4,15 +4,14 @@ const sqlite3 = require('sqlite3');
 const jwt = require('jsonwebtoken');
 const db = new sqlite3.Database('./ncufresh-demo.db');
 // 這邊是定義好的SQL語法，可以直接使用
-const registerAccount = 'INSERT INTO account (password, email) VALUES (?, ?)';
-const loginAccount = 'SELECT * FROM account WHERE account = ? AND password = ?';
+
 const getAllPosts = `SELECT * FROM POST`;
-const getPostByACC = 'SELECT * FROM post WHERE ACC_ID = ?';
 const getPostByPID = 'SELECT * FROM post WHERE ID = ?';
 const getCommentByPID = 'SELECT * FROM COMMENT WHERE POST_ID = ?';
 const getCommentByCID = 'SELECT * FROM comment WHERE ID = ?';
 const getCommentByACC = 'SELECT * FROM comment WHERE ACC_ID = ?';
 const addPost ='INSERT INTO POST (ACCID, Title, Author, Detail) VALUES (?,?,?,?)';
+const deletePost = 'UPDATE POST SET Title = "DELETED POST", Author = "DELETED POST", Detail = "You are too late to get here. QQ" WHERE ID = ?';
 // 回傳所有在資料庫中的文章
 // 由get方法進入此路由
 router.get('/', function(req, res, next) {
@@ -79,6 +78,44 @@ router.get('/post/:id/comments',function(req,res,next){
             } 
         }
     })
+})
+router.delete('/post/:id',function(req,res,next){
+    console.log(req.headers['authorization'])
+    let token = req.headers['authorization'].split(' ')[1];
+    console.log(token)
+    jwt.verify(token, 'nyanCat', function(err, decoded) {
+        if(err){
+            res.status(201).json({message:"User is not logged in"})
+        }else{
+            console.log(decoded)
+            //insert into post table
+            console.log("user id:",decoded.id)
+            //print sql statement
+            //檢測是否為作者
+            db.all(getPostByPID,[req.params.id],(err,rows)=>{
+                if(err){
+                    res.status(500).send
+                }else{
+                    if(rows.length===0){
+                        console.log("searching for post with id: "+req.params.id)
+                        res.status(201).json({message:"No such post"})
+                    }else{
+                        if(rows[0].ACCID===decoded.id){
+                            db.run(deletePost,[req.params.id],(err)=>{
+                                if(err){
+                                    res.status(500).json({message:"Something went wrong with the database"})
+                                }else{
+                                    res.status(200).json({message:"Post deleted"})
+                                }
+                            })
+                        }else{
+                            res.status(201).json({message:"You are not the author of this post"})
+                        }
+                    }
+                }
+            })
+        }
+    });
 })
 router.post('/post/add',function(req,res,next){
     //check if the user is logged in by decryting the jwt

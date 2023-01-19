@@ -1,121 +1,37 @@
 <template>
-  <div class="flex flex-col pt-14 ease-in-out duration-1000">
+  <div class="flex flex-col pt-24 ease-in-out duration-1000">
     <!--用 v-for 可以迭代-->
+    <h1 class="text-3xl article-title self-center">所有文章</h1>
+
     <div v-for="post in posts" v-bind:key="post.ID" class="group">
-      <div class="wrap-collabsible">
+      <div class="wrap-collabsible ease-in-out duration-1000">
         <input id="collapsible" class="toggle" type="checkbox" />
         <label for="collapsible" class="lbl-toggle text-center">
           <div class="card mb-0">
             <div class="card-body">
+              <div class="article-desc mb-2">
+                {{ post.ID }}
+              </div>
+              <hr />
               <h2 class="article-title">
                 {{ post.Title }}
               </h2>
               <div class="text-sm text-slate-400 text-muted mb-2">
                 {{ post.Author }}
               </div>
-              <hr />
-              <div class="article-desc mb-2">
-                {{ post.ID }}
-                {{ post.Detail }}
-              </div>
             </div>
           </div>
         </label>
         <div
-          class="collapsible-content transition transform hidden group-hover:block"
+          class="collapsible-content transition transform hidden group-hover:block ease-in-out duration-1000"
         >
           <div class="content-inner">
-            <p v-html="post.sanitizedHtml"></p>
+            {{ post.Detail }}
           </div>
           <div class="control">
             <p class="btn">
-              <a :href="frontEndUrl + '/post/' + post.ID">Edit</a>
+              <a :href="frontEndUrl + '/post/' + post.ID">View Comments</a>
             </p>
-          </div>
-        </div>
-      </div>
-      <div
-        v-show="showModal[post.ID]"
-        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
-      >
-        <div class="relative w-auto my-6 mx-auto max-w-6xl">
-          <!--content-->
-          <div
-            class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
-          >
-            <!--header-->
-            <div
-              class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
-            >
-              <form
-                :action="
-                  'http://localhost:5555/articles/' + post.ID + '?_method=PUT'
-                "
-                method="POST"
-              >
-                <div class="form-group flex flex-row w-full m-4 z-0">
-                  <div class="w-1/5 border-0 border-blue">
-                    <label for="title">Title</label>
-                  </div>
-                  <div class="w-4/5">
-                    <input
-                      required
-                      :value="post.Title"
-                      type="text"
-                      name="title"
-                      id="title"
-                      class="form-control w-11/12"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                  v-on:click="toggleModal(post.ID)"
-                >
-                  <span
-                    class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
-                  >
-                    ×
-                  </span>
-                </button>
-                <!--body-->
-                <div class="relative p-6 flex-auto">
-                  <p class="my-4 text-slate-500 text-lg leading-relaxed">
-                    <textarea
-                      class="form-control"
-                      v-model="post.Detail"
-                      rows="4"
-                      id="description"
-                      name="description"
-                    ></textarea>
-                  </p>
-                  <p class="my-4 text-slate-500 text-lg leading-relaxed">
-                    <textarea
-                      required
-                      v-model="post.markdown"
-                      name="markdown"
-                      id="markdown"
-                      class="form-control"
-                      rows="4"
-                    ></textarea>
-                  </p>
-                </div>
-                <!--footer-->
-                <div
-                  class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
-                >
-                  <button
-                    class="btn"
-                    type="button"
-                    v-on:click="toggleModal(post.ID)"
-                  >
-                    Close
-                  </button>
-                  <button class="btn" type="submit">Save Changes</button>
-                </div>
-              </form>
-            </div>
           </div>
         </div>
       </div>

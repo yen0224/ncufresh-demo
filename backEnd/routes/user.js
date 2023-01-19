@@ -58,7 +58,6 @@ router.post('/',function(req,res,next){
             )
         }
     });
-
 })
 router.post('/create',function(req,res,next){
     let username = req.body.username;

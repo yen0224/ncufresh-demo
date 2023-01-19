@@ -1,6 +1,7 @@
 <template>
-  <div class="flex flex-col pt-14 ease-in-out duration-1000">
+  <div class="flex flex-col pt-24 ease-in-out duration-1000">
     <!--用 v-for 可以迭代-->
+    <h1 class="text-3xl article-title self-center">我的文章</h1>
     <div v-for="post in posts" v-bind:key="post.ID" class="group">
       <div class="wrap-collabsible">
         <input id="collapsible" class="toggle" type="checkbox" />
@@ -42,7 +43,9 @@
               method="POST"
               class="d-inline"
             >
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <button type="button" class="btn btn-danger" @click="dp(post.ID)">
+                Delete
+              </button>
             </form>
           </div>
         </div>
@@ -152,11 +155,27 @@ export default {
       //console.log("toggle Modal", id);
       showModal[id] = !showModal[id];
     };
+    const dp = async (id) => {
+      const res = await axios.delete(baseUrl + "post/" + id, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + Cookies.get("jwt"),
+        },
+      });
+      if (res != 201) {
+        alert(res.data.message);
+      } else {
+        alert("刪除成功");
+        //reload page
+        //window.location.href("http://localhost:5147/");
+      }
+    };
+
     const getPosts = async () => {
       const response = await axios.get(baseUrl, {
         headers: {
           "Content-Type": "application/json",
-          'authorization': "Bearer " + Cookies.get("jwt"),
+          authorization: "Bearer " + Cookies.get("jwt"),
         },
       });
       posts.value = response.data;
@@ -164,7 +183,7 @@ export default {
       //console.log(posts.value);
     };
     getPosts();
-    return { posts, showModal, toggleModal, frontEndUrl };
+    return { posts, showModal, toggleModal, frontEndUrl, dp };
   },
 };
 </script>
