@@ -1,0 +1,171 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer components {
+    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC:400,500,700,900&display=swap');
+
+    body {
+        background-color: #dddddd;
+        font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    nav {
+        top: 0px;
+        left: 0px;
+        background-color: #090909;
+        color: #a0a0a0;
+        box-shadow: 0px 0px 10px #bebebe;
+    }
+
+    textarea,
+    input {
+        @apply p-2 rounded-xl;
+        background-color: #e0e0e0;
+        box-shadow: inset 2px 2px 5px #babecc, inset -2px -2px 5px #fff;
+
+    }
+
+    input:focus,
+    textarea:focus {
+        outline: none;
+        box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+    }
+
+    input:invalid {
+        border-color: #ff0000;
+        animation: shake 0.5s;
+    }
+
+    .outer-container {
+        @apply flex flex-col pt-16 self-center w-screen;
+    }
+
+    .control {
+        @apply flex flex-nowrap flex-row justify-end bottom-0 self-end;
+        color: #a0a0a0;
+    }
+
+    .btn {
+        @apply px-4 py-2 mx-2;
+        border-radius: 29px;
+        background: #e0e0e0;
+        box-shadow: 4px 4px 8px #bebebe, -4px -4px 8px #ffffff;
+    }
+
+    .btn:hover {
+        border-radius: 29px;
+        background: linear-gradient(145deg, #cacaca, #f0f0f0);
+        box-shadow: 4px 4px 8px #bebebe, -4px -4px 8px #ffffff;
+    }
+
+    .card {
+        @apply p-4 m-6 self-center;
+        width: 80vw;
+        max-width: 1020px;
+        border-radius: 10px;
+        background: #e0e0e0;
+        box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+        min-height: 150px;
+
+    }
+
+    .nu-text {
+        color: #dddddd;
+        font-size: 6rem;
+        text-shadow: 3px 3px 6px #a1a1a1, -3px -3px 6px #ffffff;
+    }
+
+    .article-title {
+        @apply text-3xl text-slate-600;
+        /*color: #808080;*/
+        text-shadow: 1px 1px 2px #a1a1a1, -1px -1px 2px #ffffff;
+    }
+
+    .article-desc {
+        @apply text-lg;
+        color: #909090;
+    }
+
+    .article-content {
+        @apply text-lg h-full;
+        color: #707070;
+    }
+
+    .container {
+        @apply relative;
+
+        width: 800px;
+        height: 500px;
+        margin: 20px;
+    }
+
+    .bluebg {
+        @apply absolute flex justify-center;
+        top: 40px;
+        width: 100%;
+        height: 420px;
+        background: rgba(255, 255, 255, 0.2);
+        /*box-shadow: 0 5px 45px rgba(0,0,0,0.2);*/
+        border-radius: 10px;
+        box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+    }
+
+    .bluebg .box {
+        @apply relative w-1/2 h-full flex justify-center items-center flex-col;
+    }
+
+    .formBx {
+        box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+        ;
+        border-radius: 10px;
+        transition: 0.5s ease-in-out;
+        overflow: hidden;
+    }
+
+    .formBx.active {
+        @apply left-1/2;
+    }
+
+    .formBx .form {
+        @apply absolute left-0 w-full;
+        overflow: hidden;
+        transition: 0.5s;
+        padding-left: 3%;
+    }
+
+    .formBx .signinform {
+        transition-delay: 0.25s;
+    }
+
+    .formBx.active .signinform {
+        left: -100%;
+        transition-delay: 0s;
+    }
+
+    .formBx .signupform {
+        left: 100%;
+        transition-delay: 0s;
+    }
+
+    .formBx.active .signupform {
+        left: 0;
+        transition-delay: 0.25s;
+    }
+
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    .collapsible-content {
+        @apply p-4 mb-6 ml-6 mr-6 border-slate-700 border-l-2 border-r-2 border-b-2 rounded-lg;
+        /*display: none;*/
+        max-height: 400px;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
+    }
+
+}
