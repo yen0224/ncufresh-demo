@@ -62,7 +62,7 @@ app.post('/login', function(req, res) {
                     req.session.userId = rows[0].ACC_ID;
                     console.log(username, 'has logged in');
                     //save information in jwt
-                    const token = jwt.sign({username:username},
+                    const token = jwt.sign({id:rows[0].ACC_ID,username:username},
                         'nyanCat',
                         {expiresIn: '1h'}
                     );

@@ -29,10 +29,35 @@ router.get('/',function(req,res,next){
     }
     )
 })
-router.post('/info',function(req,res,next){
+router.post('/',function(req,res,next){
     //decrypt jwt
     //get user id from jwt
-    
+    console.log(req.headers['authorization'])
+    let token = req.headers['authorization'].split(' ')[1];
+
+    console.log(token)
+    jwt.verify(token, 'nyanCat', function(err, decoded) {
+        if(err){
+            res.status(201).json({message:"User is not logged in"})
+        }else{
+            console.log(decoded)
+            //insert into post table
+            console.log(decoded.id)
+            //print sql statement
+            db.all(listUserPost,[decoded.id],(err,rows)=>{
+                if(err){
+                    res.status(500).json({message:"Something went wrong with the database"})
+                }else{
+                    if(rows.length===0){
+                        res.status(201).json({message:"No posts yet"})
+                    }else{
+                        res.status(200).json(rows);
+                    }
+                }
+            }
+            )
+        }
+    });
 
 })
 router.post('/create',function(req,res,next){
